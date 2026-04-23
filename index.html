@@ -2,11 +2,1277 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>STARBUCKS</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Starbucks Korea</title>
     <link rel="stylesheet" href="style.css" />
+    <!-- Google Fonts: Pretendard 대체로 Noto Sans KR 사용 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=DM+Serif+Display:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>Hello world!</h1>
+    <!-- ======================================================
+       스크롤 진행 바 (상단 고정)
+  ====================================================== -->
+    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+
+    <!-- ======================================================
+       ① GNB — 상단 네비게이션
+       스크롤 시 glassmorphism 효과 적용 (JS로 .scrolled 클래스 추가)
+  ====================================================== -->
+    <header class="gnb" id="gnb">
+      <div class="gnb-inner">
+        <!-- 로고 -->
+        <a href="#" class="gnb-logo" aria-label="스타벅스 홈으로 이동">
+          <!--
+          ★ 로고 이미지 교체 방법:
+          아래 <img> 태그의 src를 실제 로고 파일 경로로 변경하세요.
+          예) src="images/logo.svg"
+          현재는 텍스트 로고로 표시됩니다.
+        -->
+          <span class="gnb-logo-mark"
+            ><img src="logo.png" alt="Starbucks"
+          /></span>
+          <span class="gnb-logo-text">STARBUCKS</span>
+        </a>
+
+        <!-- 우측 아이콘 영역 -->
+        <div class="gnb-right">
+          <button class="gnb-icon-btn" aria-label="검색">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+          <!-- 햄버거 메뉴 버튼 -->
+          <button
+            class="gnb-hamburger"
+            id="hamburgerBtn"
+            aria-label="메뉴 열기"
+            aria-expanded="false"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======================================================
+       드로어 메뉴 (스타벅스 원본 네비게이션)
+       햄버거 버튼 클릭 시 .open 클래스 토글
+  ====================================================== -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <nav class="drawer" id="drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div class="drawer-logo-mark" aria-hidden="true"><span>★</span></div>
+        <button class="drawer-close" id="drawerClose" aria-label="메뉴 닫기">
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <ul class="drawer-nav">
+        <!-- My Starbucks -->
+        <li class="drawer-item has-sub">
+          <button class="drawer-item-btn" aria-expanded="false">
+            My Starbucks
+            <svg
+              class="drawer-arrow"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <ul class="drawer-sub">
+            <li><a href="#">한눈에 보기</a></li>
+            <li><a href="#">리워드 및 혜택</a></li>
+            <li><a href="#">My 스타벅스 카드</a></li>
+            <li><a href="#">선물하기</a></li>
+            <li><a href="#">My 쿠폰</a></li>
+            <li><a href="#">e-프리퀀시</a></li>
+            <li><a href="#">전자영수증</a></li>
+          </ul>
+        </li>
+
+        <!-- Coffee -->
+        <li class="drawer-item has-sub">
+          <button class="drawer-item-btn" aria-expanded="false">
+            Coffee
+            <svg
+              class="drawer-arrow"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <ul class="drawer-sub">
+            <li><a href="#">스타벅스 원두</a></li>
+            <li><a href="#">스타벅스 비아</a></li>
+            <li><a href="#">나와 어울리는 커피</a></li>
+            <li><a href="#">스타벅스 리저브</a></li>
+            <li><a href="#">커피 이야기</a></li>
+          </ul>
+        </li>
+
+        <!-- Menu -->
+        <li class="drawer-item has-sub">
+          <button class="drawer-item-btn" aria-expanded="false">
+            Menu
+            <svg
+              class="drawer-arrow"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <ul class="drawer-sub">
+            <li><a href="#">음료 전체보기</a></li>
+            <li><a href="#">콜드 브루</a></li>
+            <li><a href="#">에스프레소</a></li>
+            <li><a href="#">프라푸치노</a></li>
+            <li><a href="#">티 (티바나)</a></li>
+            <li><a href="#">푸드</a></li>
+            <li><a href="#">상품</a></li>
+            <li><a href="#">카드</a></li>
+          </ul>
+        </li>
+
+        <!-- Responsibility -->
+        <li class="drawer-item has-sub">
+          <button class="drawer-item-btn" aria-expanded="false">
+            Responsibility
+            <svg
+              class="drawer-arrow"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <ul class="drawer-sub">
+            <li><a href="#">지구를 위한 약속</a></li>
+            <li><a href="#">파트너 문화</a></li>
+            <li><a href="#">지역사회 참여</a></li>
+          </ul>
+        </li>
+
+        <!-- What's New -->
+        <li class="drawer-item">
+          <a href="#" class="drawer-item-link">What's New</a>
+        </li>
+
+        <!-- 매장 찾기 -->
+        <li class="drawer-item">
+          <a href="#" class="drawer-item-link">매장 찾기</a>
+        </li>
+      </ul>
+
+      <!-- 드로어 하단 로그인/회원가입 -->
+      <div class="drawer-footer">
+        <a href="#" class="drawer-footer-btn primary">로그인</a>
+        <a href="#" class="drawer-footer-btn secondary">회원가입</a>
+      </div>
+    </nav>
+
+    <!-- ======================================================
+       메인 콘텐츠
+  ====================================================== -->
+    <main>
+      <!-- ====================================================
+         ② 히어로 섹션 — 풀스크린 메인 비주얼 (2장 슬라이드)
+    ==================================================== -->
+      <section class="hero" id="hero" aria-label="메인 비주얼">
+        <div class="hero-slider" id="heroSlider">
+          <!-- 슬라이드 1 -->
+          <div class="hero-slide active" data-index="0">
+            <!-- 배경 그라디언트 + 노이즈 텍스처 -->
+            <div class="hero-bg hero-bg--slide1"></div>
+            <div class="hero-noise"></div>
+            <!-- 장식 원 -->
+            <div class="hero-deco-circle hero-deco-circle--1"></div>
+            <div class="hero-deco-circle hero-deco-circle--2"></div>
+
+            <!--
+            ★ 히어로 음료 이미지 교체 (슬라이드 1):
+            아래 .hero-drink-placeholder 를 <img> 태그로 교체하세요.
+            예)
+            <img
+              src="images/hero-drink-1.png"
+              alt="신메뉴 음료 이미지"
+              class="hero-drink-img"
+            />
+            권장 사이즈: 260×360px 이상, 배경 제거된 PNG
+          -->
+            <div class="hero-drink-area">
+              <img
+                src="drink.png"
+                alt="신메뉴 음료 이미지"
+                class="hero-drink-img"
+              />
+            </div>
+
+            <!-- 텍스트 콘텐츠 -->
+            <div class="hero-content">
+              <div class="hero-season-tag">✦ Summer 2025</div>
+              <h1 class="hero-title">
+                새로운 여름이<br />
+                <em>시작됩니다</em>
+              </h1>
+              <p class="hero-desc">
+                이번 시즌 스타벅스가 준비한<br />
+                특별한 여름 신메뉴를 만나보세요
+              </p>
+              <a href="#new-menu" class="hero-cta">
+                신메뉴 보러가기
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- 슬라이드 2 -->
+          <div class="hero-slide" data-index="1">
+            <div class="hero-bg hero-bg--slide2"></div>
+            <div class="hero-noise"></div>
+            <div class="hero-deco-circle hero-deco-circle--1"></div>
+            <div class="hero-deco-circle hero-deco-circle--2"></div>
+
+            <!--
+            ★ 히어로 음료 이미지 교체 (슬라이드 2):
+            아래 .hero-drink-placeholder 를 <img> 태그로 교체하세요.
+            예)
+            <img
+              src="images/hero-drink-2.png"
+              alt="프리퀀시 이벤트 음료"
+              class="hero-drink-img"
+            />
+            권장 사이즈: 260×360px 이상, 배경 제거된 PNG
+          -->
+            <div class="hero-drink-area">
+              <img
+                src="drink2.png"
+                alt="프리퀀시 이벤트 음료"
+                class="hero-drink-img"
+              />
+            </div>
+
+            <div class="hero-content">
+              <div class="hero-season-tag">✦ e-Frequency 2025</div>
+              <h1 class="hero-title">
+                스티커 17개를<br />
+                <em>모아보세요</em>
+              </h1>
+              <p class="hero-desc">
+                여름 e-프리퀀시 이벤트 진행 중<br />
+                특별한 사은품을 받아가세요
+              </p>
+              <a href="#events" class="hero-cta">
+                이벤트 보러가기
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- /hero-slider -->
+
+        <!-- 슬라이드 인디케이터 -->
+        <div class="hero-indicators" role="tablist" aria-label="슬라이드 선택">
+          <button
+            class="hero-indicator active"
+            data-slide="0"
+            role="tab"
+            aria-selected="true"
+            aria-label="슬라이드 1"
+          ></button>
+          <button
+            class="hero-indicator"
+            data-slide="1"
+            role="tab"
+            aria-selected="false"
+            aria-label="슬라이드 2"
+          ></button>
+        </div>
+      </section>
+
+      <!-- ====================================================
+         ③ 신메뉴 소개 섹션 — 가로 스크롤 카드
+    ==================================================== -->
+      <section
+        class="section section--newmenu"
+        id="new-menu"
+        aria-label="신메뉴 소개"
+      >
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <p class="section-eyebrow">New Arrivals</p>
+              <h2 class="section-title-text">이번 시즌 <em>신메뉴</em></h2>
+            </div>
+            <a href="#" class="section-more"
+              >전체보기
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- 가로 스크롤 카드 리스트 -->
+          <div class="menu-scroll-wrap">
+            <ul class="menu-cards" role="list">
+              <!-- 메뉴 카드 1 -->
+              <li class="menu-card">
+                <!--
+                ★ 메뉴 이미지 교체 (카드 1 — 돌체 콜드브루 라떼):
+                아래 .menu-card-img-placeholder 를 <img> 태그로 교체하세요.
+                예)
+                <img
+                  src="images/menu-dolce-coldbrew.png"
+                  alt="돌체 콜드브루 라떼"
+                  class="menu-card-img"
+                />
+                권장 사이즈: 160×140px 이상, 배경 제거 PNG 권장
+              -->
+                <div class="menu-card-img-wrap">
+                  <img
+                    src="menu1.png"
+                    alt="돌체 콜드브루 라떼"
+                    class="menu-card-img"
+                  />
+                  <div class="menu-card-badge menu-card-badge--new">NEW</div>
+                </div>
+                <div class="menu-card-body">
+                  <h3 class="menu-card-name">돌체 콜드브루 라떼</h3>
+                  <p class="menu-card-name-en">Dolce Cold Brew Latte</p>
+                  <p class="menu-card-desc">
+                    달콤한 돌체 시럽과 부드러운 콜드브루의 황금 조화
+                  </p>
+                </div>
+              </li>
+
+              <!-- 메뉴 카드 2 -->
+              <li class="menu-card">
+                <!--
+                ★ 메뉴 이미지 교체 (카드 2 — 복숭아 아이스 티):
+                아래 .menu-card-img-placeholder 를 <img> 태그로 교체하세요.
+                예)
+                <img
+                  src="images/menu-peach-tea.png"
+                  alt="복숭아 아이스 티"
+                  class="menu-card-img"
+                />
+              -->
+                <div class="menu-card-img-wrap">
+                  <img
+                    src="menu2.png"
+                    alt="복숭아 아이스 티"
+                    class="menu-card-img"
+                  />
+                  <div class="menu-card-badge menu-card-badge--new">NEW</div>
+                </div>
+                <div class="menu-card-body">
+                  <h3 class="menu-card-name">복숭아 아이스 티</h3>
+                  <p class="menu-card-name-en">Peach Iced Tea</p>
+                  <p class="menu-card-desc">
+                    복숭아의 달콤하고 상큼한 여름 한정 티
+                  </p>
+                </div>
+              </li>
+
+              <!-- 메뉴 카드 3 -->
+              <li class="menu-card">
+                <!--
+                ★ 메뉴 이미지 교체 (카드 3 — 블루베리 요거트 프라푸치노):
+                아래 .menu-card-img-placeholder 를 <img> 태그로 교체하세요.
+                예)
+                <img
+                  src="images/menu-blueberry-frappe.png"
+                  alt="블루베리 요거트 프라푸치노"
+                  class="menu-card-img"
+                />
+              -->
+                <div class="menu-card-img-wrap">
+                  <img
+                    src="menu3.png"
+                    alt="블루베리 요거트 프라푸치노"
+                    class="menu-card-img"
+                  />
+                  <div class="menu-card-badge menu-card-badge--season">
+                    SEASON
+                  </div>
+                </div>
+                <div class="menu-card-body">
+                  <h3 class="menu-card-name">블루베리 요거트 프라푸치노</h3>
+                  <p class="menu-card-name-en">Blueberry Yogurt Frappuccino</p>
+                  <p class="menu-card-desc">
+                    진한 블루베리와 요거트의 달콤새콤한 맛
+                  </p>
+                </div>
+              </li>
+
+              <!-- 메뉴 카드 4 -->
+              <li class="menu-card">
+                <!--
+                ★ 메뉴 이미지 교체 (카드 4 — 망고 패션 티):
+                아래 .menu-card-img-placeholder 를 <img> 태그로 교체하세요.
+                예)
+                <img
+                  src="images/menu-mango-passion.png"
+                  alt="망고 패션 티"
+                  class="menu-card-img"
+                />
+              -->
+                <div class="menu-card-img-wrap">
+                  <img
+                    src="menu4.png"
+                    alt="망고 패션 티"
+                    class="menu-card-img"
+                  />
+                  <div class="menu-card-badge menu-card-badge--best">BEST</div>
+                </div>
+                <div class="menu-card-body">
+                  <h3 class="menu-card-name">망고 패션 프루트 티</h3>
+                  <p class="menu-card-name-en">Mango Passion Fruit Tea</p>
+                  <p class="menu-card-desc">
+                    열대과일의 달콤함이 가득한 여름 음료
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+         ④ 브랜드 스토리 섹션
+         숫자 카운트업 애니메이션 — JS의 countUp() 함수 참조
+    ==================================================== -->
+      <section class="section section--brand" aria-label="브랜드 스토리">
+        <div class="section-inner">
+          <!-- 장식 원 -->
+          <div class="brand-deco-circle brand-deco-circle--1"></div>
+          <div class="brand-deco-circle brand-deco-circle--2"></div>
+
+          <p class="section-eyebrow section-eyebrow--light">Our Coffee Story</p>
+          <h2 class="brand-title">최고의 원두,<br />특별한 한 잔</h2>
+          <p class="brand-desc">
+            100% 프리미엄 아라비카 원두를 정성껏 로스팅하여<br />
+            매일 특별한 커피 경험을 선사합니다
+          </p>
+
+          <!--
+          ★ 브랜드 이미지 교체:
+          아래 .brand-img-placeholder 를 <img> 태그로 교체하세요.
+          예)
+          <img
+            src="images/brand-story.jpg"
+            alt="스타벅스 커피 로스팅"
+            class="brand-img"
+          />
+          권장 사이즈: 335×220px 이상, 가로형 이미지
+        -->
+          <img src="brand.png" alt="스타벅스 커피 로스팅" class="brand-img" />
+
+          <!-- 숫자 통계 (카운트업 애니메이션) -->
+          <div class="brand-stats">
+            <div class="brand-stat">
+              <!-- data-target: 목표 숫자 / data-suffix: 단위 -->
+              <div class="brand-stat-num" data-target="700" data-suffix="만+">
+                0
+              </div>
+              <p class="brand-stat-label">월간 앱 사용자</p>
+            </div>
+            <div class="brand-stat-divider"></div>
+            <div class="brand-stat">
+              <div class="brand-stat-num" data-target="5" data-suffix="억+">
+                0
+              </div>
+              <p class="brand-stat-label">사이렌오더 누적</p>
+            </div>
+            <div class="brand-stat-divider"></div>
+            <div class="brand-stat">
+              <div class="brand-stat-num" data-target="1" data-suffix="위">
+                0
+              </div>
+              <p class="brand-stat-label">카페 앱 사용시간</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+         ⑤ 이벤트 섹션
+    ==================================================== -->
+      <section class="section section--events" id="events" aria-label="이벤트">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <p class="section-eyebrow">What's New</p>
+              <h2 class="section-title-text">지금 진행 중인 <em>이벤트</em></h2>
+            </div>
+            <a href="#" class="section-more"
+              >전체보기
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </a>
+          </div>
+
+          <ul class="event-list" role="list">
+            <!-- 이벤트 카드 1 -->
+            <li class="event-card">
+              <!--
+              ★ 이벤트 썸네일 이미지 교체 (이벤트 1 — e-프리퀀시):
+              아래 .event-thumb-placeholder 를 <img> 태그로 교체하세요.
+              예)
+              <img
+                src="images/event-frequency.jpg"
+                alt="e-프리퀀시 이벤트"
+                class="event-thumb-img"
+              />
+              권장 사이즈: 72×72px 이상, 정사각형
+            -->
+              <div class="event-thumb">
+                <img
+                  src="event.png"
+                  alt="e-프리퀀시 이벤트"
+                  class="event-thumb-img"
+                />
+              </div>
+              <div class="event-body">
+                <span class="event-badge event-badge--event">EVENT</span>
+                <h3 class="event-title">
+                  e-프리퀀시 여름 이벤트<br />스티커 17개를 모아보세요
+                </h3>
+                <!-- data-deadline: YYYY-MM-DD 형식으로 D-day 계산 -->
+                <p class="event-date" data-deadline="2025-08-31">
+                  ~ 2025. 08. 31
+                </p>
+              </div>
+            </li>
+
+            <!-- 이벤트 카드 2 -->
+            <li class="event-card">
+              <!--
+              ★ 이벤트 썸네일 이미지 교체 (이벤트 2 — 카카오페이 할인):
+              아래 .event-thumb-placeholder 를 <img> 태그로 교체하세요.
+              예)
+              <img
+                src="images/event-kakaopay.jpg"
+                alt="카카오페이 할인 이벤트"
+                class="event-thumb-img"
+              />
+            -->
+              <div class="event-thumb">
+                <img
+                  src="kakao.png"
+                  alt="카카오페이 할인 이벤트"
+                  class="event-thumb-img"
+                />
+              </div>
+              <div class="event-body">
+                <span class="event-badge event-badge--promo">PROMOTION</span>
+                <h3 class="event-title">
+                  카카오페이 결제 시<br />10% 할인 혜택
+                </h3>
+                <p class="event-date" data-deadline="2025-07-31">
+                  ~ 2025. 07. 31
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ====================================================
+         ⑥ 리워드 섹션 — CTA 배너
+    ==================================================== -->
+      <section class="section section--reward" aria-label="스타벅스 리워드">
+        <div class="section-inner">
+          <div class="reward-banner">
+            <div class="reward-icon-wrap">
+              <!-- 별 반짝임 애니메이션 적용 (.star-pulse) -->
+              <div class="reward-icon-circle">
+                <span class="reward-star star-pulse">⭐</span>
+              </div>
+            </div>
+            <div class="reward-text">
+              <p class="reward-eyebrow">Starbucks Rewards</p>
+              <h2 class="reward-title">별 모아서<br />무료 음료 받기</h2>
+              <p class="reward-desc">스타벅스 리워드 회원만의 특별한 혜택</p>
+              <a href="#" class="reward-cta">혜택 알아보기 →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+         ⑦ 매장 찾기 섹션
+    ==================================================== -->
+      <section class="section section--store" aria-label="매장 찾기">
+        <div class="section-inner">
+          <div class="section-header">
+            <div>
+              <p class="section-eyebrow">Find a Store</p>
+              <h2 class="section-title-text">내 주변 <em>매장 찾기</em></h2>
+            </div>
+          </div>
+
+          <div class="store-card">
+            <!--
+            ★ 지도 이미지 교체:
+            아래 .store-map-placeholder 를 <img> 태그 또는 지도 embed 코드로 교체하세요.
+
+            방법 1 — 이미지 사용:
+            <img
+              src="images/map-screenshot.jpg"
+              alt="스타벅스 매장 지도"
+              class="store-map-img"
+            />
+
+            방법 2 — 카카오맵 embed (iframe):
+            <iframe
+              src="https://map.kakao.com/..."
+              class="store-map-iframe"
+              title="스타벅스 매장 지도"
+            ></iframe>
+
+            방법 3 — 네이버 지도 embed (iframe):
+            <iframe
+              src="https://map.naver.com/..."
+              class="store-map-iframe"
+              title="스타벅스 매장 지도"
+            ></iframe>
+
+            권장 사이즈: 335×160px 이상
+          -->
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12931.389953203081!2d128.65328384066768!3d35.87725414861942!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35660b00760849e5%3A0xc0e587d735e66329!2z7Iqk7YOA67KF7IqkIOuMgOq1rOuwqey0jERU7KCQ!5e0!3m2!1sko!2skr!4v1776924929035!5m2!1sko!2skr"
+              width="600"
+              height="450"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              class="store-map-iframe"
+              title="스타벅스 매장 지도"
+            ></iframe>
+
+            <div class="store-info">
+              <div class="store-info-text">
+                <h3 class="store-info-title">가까운 매장 찾기</h3>
+                <p class="store-info-desc">현재 위치 기반으로 찾아드려요</p>
+              </div>
+              <a href="#" class="store-btn">찾아보기</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+         ⑧ 앱 다운로드 + SNS 섹션
+    ==================================================== -->
+      <section class="section section--app" aria-label="앱 다운로드">
+        <div class="section-inner">
+          <p class="section-eyebrow">App Download</p>
+          <h2 class="section-title-text" style="margin-bottom: 6px">
+            앱으로 더 편리하게
+          </h2>
+          <p class="app-desc">사이렌오더, 리워드, 이벤트를 한 번에</p>
+
+          <div class="app-btns">
+            <!--
+            ★ 앱스토어 링크 교체:
+            아래 href="#" 를 실제 앱스토어 URL로 변경하세요.
+            예) href="https://apps.apple.com/kr/app/스타벅스/id466682252"
+          -->
+            <a
+              href="https://apps.apple.com/kr/app/스타벅스/id466682252"
+              class="app-btn app-btn--apple"
+              aria-label="App Store에서 다운로드"
+            >
+              <svg
+                class="app-btn-icon"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="22"
+                height="22"
+              >
+                <path
+                  d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"
+                />
+              </svg>
+              <span>App Store</span>
+            </a>
+            <!--
+            ★ 구글플레이 링크 교체:
+            아래 href="#" 를 실제 구글플레이 URL로 변경하세요.
+            예) href="https://play.google.com/store/apps/details?id=com.starbucks.co"
+          -->
+            <a
+              href="https://play.google.com/store/apps/details?id=com.starbucks.co"
+              class="app-btn app-btn--google"
+              aria-label="Google Play에서 다운로드"
+            >
+              <svg
+                class="app-btn-icon"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="22"
+                height="22"
+              >
+                <path
+                  d="M3.18 23.76c.3.16.66.19 1.02.06L14.76 12 3.18.18C2.82.05 2.46.08 2.16.24 1.56.56 1.2 1.2 1.2 1.98V22c0 .78.36 1.44.96 1.76h.02zM17.44 14.72l-2.84-2.72 2.84-2.72 3.22 1.82c.92.52.92 1.36 0 1.88l-3.22 1.74zM4.22 23.58l9.96-9.96-2.44-2.34L4.22.42v23.16zm10.96-10.56l-9.72 9.72 8.38-4.74 1.34-4.98z"
+                />
+              </svg>
+              <span>Google Play</span>
+            </a>
+          </div>
+
+          <!-- SNS 링크 -->
+          <div class="sns-row">
+            <!--
+            ★ SNS 링크 교체:
+            각 href="#" 를 실제 SNS 계정 URL로 변경하세요.
+            예) href="https://www.instagram.com/starbuckskorea"
+          -->
+            <a
+              href="https://www.instagram.com/starbuckskorea"
+              class="sns-btn"
+              aria-label="인스타그램"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                width="20"
+                height="20"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a
+              href="https://www.youtube.com/user/starbuckskorea"
+              class="sns-btn"
+              aria-label="유튜브"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                width="20"
+                height="20"
+              >
+                <path
+                  d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"
+                />
+                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" />
+              </svg>
+            </a>
+            <a
+              href="https://www.facebook.com/starbuckskorea/?locale=ko_KR"
+              class="sns-btn"
+              aria-label="페이스북"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                width="20"
+                height="20"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="sns-btn" aria-label="블로그">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                width="20"
+                height="20"
+              >
+                <path
+                  d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+         ⑨ 푸터
+    ==================================================== -->
+      <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+          <div class="footer-top">
+            <div class="footer-logo">
+              <div class="footer-logo-mark" aria-hidden="true">
+                <img src="logo.png" alt="Starbucks" />
+              </div>
+              <span class="footer-logo-text">STARBUCKS</span>
+            </div>
+            <!-- 패밀리 사이트 드롭다운 -->
+            <button
+              class="family-site-btn"
+              id="familySiteBtn"
+              aria-expanded="false"
+            >
+              Family Site
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            <ul class="family-site-list" id="familySiteList" aria-hidden="true">
+              <li><a href="#">Starbucks Global</a></li>
+              <li><a href="#">Starbucks Reserve</a></li>
+              <li><a href="#">스타벅스 온라인스토어</a></li>
+            </ul>
+          </div>
+
+          <!-- 약관 링크 -->
+          <nav class="footer-links" aria-label="하단 메뉴">
+            <a href="#">이용약관</a>
+            <a href="#" class="footer-link--bold">개인정보처리방침</a>
+            <a href="#">매장찾기</a>
+            <a href="#">고객센터</a>
+          </nav>
+
+          <!-- 사업자 정보 토글 -->
+          <button
+            class="biz-info-toggle"
+            id="bizInfoToggle"
+            aria-expanded="false"
+          >
+            사업자 정보 보기
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          <div class="biz-info" id="bizInfo" aria-hidden="true">
+            <p>상호: 주식회사 에스씨케이컴퍼니</p>
+            <p>대표자: 손정현</p>
+            <p>사업자등록번호: 000-00-00000</p>
+            <p>주소: 서울특별시 중구 세종대로 ○○○</p>
+            <p>고객센터: 1522-3232</p>
+          </div>
+
+          <p class="footer-copy">
+            © 2025 Starbucks Coffee Korea. All Rights Reserved.
+          </p>
+        </div>
+      </footer>
+    </main>
+    <!-- /main -->
+
+    <!-- ======================================================
+       floating 버튼들 (스크롤 일정 이상 시 등장)
+  ====================================================== -->
+
+    <!-- 앱 다운로드 플로팅 버튼 -->
+    <a
+      href="#app"
+      class="floating-app-btn"
+      id="floatingAppBtn"
+      aria-label="앱 다운로드"
+    >
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+        <line x1="12" y1="18" x2="12.01" y2="18" />
+      </svg>
+      <span>앱으로 보기</span>
+    </a>
+
+    <!-- 위로 가기 버튼 -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="맨 위로 이동">
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="18 15 12 9 6 15" />
+      </svg>
+    </button>
+
+    <!-- ======================================================
+       JavaScript
+  ====================================================== -->
+    <script>
+      (function () {
+        "use strict";
+
+        /* ── 스크롤 진행 바 ── */
+        const progressBar = document.getElementById("scrollProgressBar");
+        function updateProgress() {
+          const scrollTop = window.scrollY;
+          const docHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          progressBar.style.width = pct + "%";
+        }
+
+        /* ── GNB 스크롤 glassmorphism ── */
+        const gnb = document.getElementById("gnb");
+        function updateGnb() {
+          gnb.classList.toggle("scrolled", window.scrollY > 10);
+        }
+
+        /* ── floating 버튼 표시 ── */
+        const floatingAppBtn = document.getElementById("floatingAppBtn");
+        const scrollTopBtn = document.getElementById("scrollTopBtn");
+        function updateFloating() {
+          const show = window.scrollY > 300;
+          floatingAppBtn.classList.toggle("visible", show);
+          scrollTopBtn.classList.toggle("visible", show);
+        }
+
+        /* ── 위로 가기 ── */
+        scrollTopBtn.addEventListener("click", function () {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        /* ── 통합 스크롤 핸들러 ── */
+        window.addEventListener(
+          "scroll",
+          function () {
+            updateProgress();
+            updateGnb();
+            updateFloating();
+            checkIntersections();
+          },
+          { passive: true },
+        );
+
+        /* ── 햄버거 / 드로어 메뉴 ── */
+        const hamburgerBtn = document.getElementById("hamburgerBtn");
+        const drawer = document.getElementById("drawer");
+        const drawerOverlay = document.getElementById("drawerOverlay");
+        const drawerClose = document.getElementById("drawerClose");
+
+        function openDrawer() {
+          drawer.classList.add("open");
+          drawerOverlay.classList.add("open");
+          hamburgerBtn.classList.add("open");
+          hamburgerBtn.setAttribute("aria-expanded", "true");
+          drawer.setAttribute("aria-hidden", "false");
+          document.body.style.overflow = "hidden";
+        }
+        function closeDrawer() {
+          drawer.classList.remove("open");
+          drawerOverlay.classList.remove("open");
+          hamburgerBtn.classList.remove("open");
+          hamburgerBtn.setAttribute("aria-expanded", "false");
+          drawer.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = "";
+        }
+
+        hamburgerBtn.addEventListener("click", function () {
+          drawer.classList.contains("open") ? closeDrawer() : openDrawer();
+        });
+        drawerClose.addEventListener("click", closeDrawer);
+        drawerOverlay.addEventListener("click", closeDrawer);
+
+        /* 드로어 서브메뉴 아코디언 */
+        document
+          .querySelectorAll(".drawer-item.has-sub .drawer-item-btn")
+          .forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              const isOpen = this.getAttribute("aria-expanded") === "true";
+              /* 다른 열린 항목 닫기 */
+              document
+                .querySelectorAll('.drawer-item-btn[aria-expanded="true"]')
+                .forEach(function (b) {
+                  b.setAttribute("aria-expanded", "false");
+                  b.closest(".drawer-item").classList.remove("sub-open");
+                });
+              if (!isOpen) {
+                this.setAttribute("aria-expanded", "true");
+                this.closest(".drawer-item").classList.add("sub-open");
+              }
+            });
+          });
+
+        /* ── 히어로 슬라이더 (2장 자동 전환) ── */
+        const slides = document.querySelectorAll(".hero-slide");
+        const indicators = document.querySelectorAll(".hero-indicator");
+        let currentSlide = 0;
+        let slideTimer = null;
+
+        function goToSlide(idx) {
+          slides[currentSlide].classList.remove("active");
+          indicators[currentSlide].classList.remove("active");
+          indicators[currentSlide].setAttribute("aria-selected", "false");
+
+          currentSlide = idx;
+
+          slides[currentSlide].classList.add("active");
+          indicators[currentSlide].classList.add("active");
+          indicators[currentSlide].setAttribute("aria-selected", "true");
+        }
+
+        function nextSlide() {
+          goToSlide((currentSlide + 1) % slides.length);
+        }
+
+        function startAutoSlide() {
+          slideTimer = setInterval(nextSlide, 5000); /* 5초 간격 */
+        }
+        function stopAutoSlide() {
+          clearInterval(slideTimer);
+        }
+
+        /* 인디케이터 클릭 */
+        indicators.forEach(function (btn, idx) {
+          btn.addEventListener("click", function () {
+            stopAutoSlide();
+            goToSlide(idx);
+            startAutoSlide();
+          });
+        });
+
+        startAutoSlide();
+
+        /* ── 숫자 카운트업 애니메이션 ── */
+        function countUp(el) {
+          const target = parseInt(el.dataset.target, 10);
+          const suffix = el.dataset.suffix || "";
+          const duration = 1800; /* ms */
+          const step = 16;
+          const increment = target / (duration / step);
+          let current = 0;
+
+          const timer = setInterval(function () {
+            current += increment;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            el.textContent = Math.floor(current) + suffix;
+          }, step);
+        }
+
+        /* ── 이벤트 D-day 계산 ── */
+        document
+          .querySelectorAll(".event-date[data-deadline]")
+          .forEach(function (el) {
+            const deadline = new Date(el.dataset.deadline);
+            const today = new Date();
+            deadline.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            const diff = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+
+            if (diff > 0) {
+              const badge = document.createElement("span");
+              badge.className = "dday-badge";
+              badge.textContent = "D-" + diff;
+              el.appendChild(badge);
+            } else if (diff === 0) {
+              const badge = document.createElement("span");
+              badge.className = "dday-badge dday-badge--today";
+              badge.textContent = "D-Day";
+              el.appendChild(badge);
+            }
+          });
+
+        /* ── IntersectionObserver (섹션 진입 시 애니메이션 트리거) ── */
+        const observerOptions = {
+          threshold: 0.2,
+          rootMargin: "0px 0px -50px 0px",
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in-view");
+
+              /* 브랜드 섹션 숫자 카운트업 */
+              if (entry.target.classList.contains("section--brand")) {
+                entry.target
+                  .querySelectorAll(".brand-stat-num")
+                  .forEach(countUp);
+              }
+
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        function checkIntersections() {
+          /* passive scroll에서 호출용 — observer가 처리 */
+        }
+
+        /* 관찰 대상 등록 */
+        document
+          .querySelectorAll(".section, .event-card, .menu-card")
+          .forEach(function (el) {
+            observer.observe(el);
+          });
+
+        /* ── 푸터: 패밀리 사이트 드롭다운 ── */
+        const familySiteBtn = document.getElementById("familySiteBtn");
+        const familySiteList = document.getElementById("familySiteList");
+
+        familySiteBtn.addEventListener("click", function () {
+          const isOpen = this.getAttribute("aria-expanded") === "true";
+          this.setAttribute("aria-expanded", String(!isOpen));
+          familySiteList.setAttribute("aria-hidden", String(isOpen));
+          familySiteList.classList.toggle("open", !isOpen);
+        });
+
+        /* ── 푸터: 사업자 정보 토글 ── */
+        const bizInfoToggle = document.getElementById("bizInfoToggle");
+        const bizInfo = document.getElementById("bizInfo");
+
+        bizInfoToggle.addEventListener("click", function () {
+          const isOpen = this.getAttribute("aria-expanded") === "true";
+          this.setAttribute("aria-expanded", String(!isOpen));
+          bizInfo.setAttribute("aria-hidden", String(isOpen));
+          bizInfo.classList.toggle("open", !isOpen);
+        });
+
+        /* ── 초기화 ── */
+        updateProgress();
+        updateGnb();
+        updateFloating();
+      })();
+    </script>
   </body>
 </html>
